@@ -1,4 +1,6 @@
 <?php
+    session_start();
+
     include('../php/dbConnection.php');
     include('../php/functions.php');
 ?>
@@ -129,10 +131,8 @@
                                 title: "Error",
                                 text: "Invalid email format",
                                 icon: "error"
-                            }).then((result) => {
-                                if (result.isConfirmed) {
-                                    window.location.href = "register.php";
-                                }
+                            }).then(() => {
+                                window.location.href = "register.php";
                             });
                         </script>';
                     return;
@@ -145,17 +145,15 @@
                                 title: "Error",
                                 text: "Passwords do not match",
                                 icon: "error"
-                            }).then((result) => {
-                                if (result.isConfirmed) {
-                                    window.location.href = "register.php";
-                                }
+                            }).then(() => {
+                                window.location.href = "register.php";
                             });
                         </script>';
                     return;
                 }
 
                 // Check if email already exists
-                $checkEmail = $conn->prepare("SELECT email FROM user WHERE email = ?");
+                $checkEmail = $conn->prepare("SELECT email FROM student WHERE email = ?");
                 $checkEmail->bind_param("s", $inputEmail);
                 $checkEmail->execute();
                 $checkEmail->store_result();
@@ -166,10 +164,8 @@
                                 title: "Error",
                                 text: "Email is already in use",
                                 icon: "error"
-                            }).then((result) => {
-                                if (result.isConfirmed) {
-                                    window.location.href = "register.php";
-                                }
+                            }).then(() => {
+                                window.location.href = "register.php";
                             });
                         </script>';
                     $checkEmail->close();
@@ -181,27 +177,27 @@
                 $hashedPassword = password_hash($inputPassword, PASSWORD_BCRYPT, ['cost' => 12]);
 
                 // Default values
-                $role = 'student';
+                $defaultGender = 'unspecified';
                 $level = 1;
                 $points = 0;
                 $proficiency = 'beginner';
 
-                // Insert new user
-                $saveRecord = $conn->prepare("INSERT INTO user (email, password, fname, lname, role, level, points, proficiency, dateCreated)
-                                                VALUES (?, ?, ?, ?, ?, ?, ?, ?, NOW())");
+                // Insert new student (gender is NULL for now)
+                $saveRecord = $conn->prepare("INSERT INTO student (email, password, fname, lname, gender, level, points, proficiency, dateCreated)
+                                            VALUES (?, ?, ?, ?, ?, ?, ?, ?, NOW())");
 
-                $saveRecord->bind_param("sssssiis", $inputEmail, $hashedPassword, $inputFirstName, $inputLastName, $role, $level, $points, $proficiency);
+                $saveRecord->bind_param("sssssiis", $inputEmail, $hashedPassword, $inputFirstName, $inputLastName, $defaultGender, $level, $points, $proficiency);
 
                 if ($saveRecord->execute()) {
+                    $_SESSION['student_id'] = $conn->insert_id;
+
                     echo '<script>
                             Swal.fire({
                                 title: "Success",
-                                text: "Account successfully created",
+                                text: "Account created.",
                                 icon: "success"
-                            }).then((result) => {
-                                if (result.isConfirmed) {
-                                    window.location.href = "register.php";
-                                }
+                            }).then(() => {
+                                window.location.href = "guide.php";
                             });
                         </script>';
                 } else {
@@ -210,10 +206,8 @@
                                 title: "Error",
                                 text: "Account creation failed",
                                 icon: "error"
-                            }).then((result) => {
-                                if (result.isConfirmed) {
-                                    window.location.href = "register.php";
-                                }
+                            }).then(() => {
+                                window.location.href = "register.php";
                             });
                         </script>';
                 }
@@ -226,16 +220,14 @@
                             title: "Error",
                             text: "All fields are required",
                             icon: "error"
-                        }).then((result) => {
-                            if (result.isConfirmed) {
-                                window.location.href = "register.php";
-                            }
+                        }).then(() => {
+                            window.location.href = "register.php";
                         });
                     </script>';
             }
         }
-    
     ?>
+
 
     <script src="../components/navbar.js"></script>
     <script src="../javascript/register.js"></script>

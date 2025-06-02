@@ -12,8 +12,8 @@
     <link rel="icon" type="image/x-icon" href="../images/Al-ghaya logoForPrint.svg">
     <title>Al-Ghaya - Homepage</title>
 </head>
-<body>
-    <div class="container bg-white w-1/2 h-screen right-0 top-0 fixed z-50"></div>
+<body class="bg-[#F3F3FC]">
+    <!-- <div class="container bg-white w-1/2 h-screen right-0 top-0 fixed z-50"></div> -->
     <!-- Navbar -->
     <nav class="bg-[#F3F3FC]">
         <div class="mx-auto px-2 sm:px-6 lg:px-8">
