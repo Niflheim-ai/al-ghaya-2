@@ -1,8 +1,6 @@
-<button?php
+<?php
     include('../php/dbConnection.php');
     include('../php/functions.php');
-
-    
 ?>
 
 <!DOCTYPE html>
@@ -28,7 +26,7 @@
                 <buttton onclick="history.back()"><svg class="w-8 h-8" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
                     <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M10 19l-7-7m0 0l7-7m-7 7h18"></path>
                 </svg></button>
-            </button>
+            </>
 
             <!-- Left column container -->
             <div class="hidden lg:flex lg:flex-col gap-5 lg:py-40 md:w-6/12 lg:w-7/12 px-25">
@@ -115,7 +113,6 @@
     </div>
 
     <?php  
-    
         if ($_SERVER["REQUEST_METHOD"] == "POST") {
             if (!empty($_POST['first-name']) && !empty($_POST['last-name']) && !empty($_POST['email']) && !empty($_POST['password']) && !empty($_POST['confirm-password'])) {
 
